@@ -1,21 +1,27 @@
 # App_DevOps_encapsulation
-## Docker-compose Flask with Redis 
+## Kubernated Flask with Redis 
 
-A containerized Flask app that query ping to a Redis db and returns pong counts.
+Kubernates with Flask apps that query ping to a Redis db (separate pods) and returns pong counts.
 
-With docker-compose you can start / stop the whole env at one. 
+In this exaple we used 3 replicas that can be canged within deploy file with the parameter:
+replicas: 3
+
+The env is created in the namespace ping-ns (namespace.yml)
+
+Also added ConfigMap (redis-confmap.yml) to allow the redis_host and the redis_password configurable from outside of the pod.
 
 To run the app run the commands:
 
 ```bash
-	docker-compose up -d 
+	./ping-install.sh
+	./ping-unstall.sh
 ```
 
-To shut down the env:
+To check the service IP:
 ```bash
-	docker-compose down
+        kubectl get svc -n ping-ns | grep flask | awk '{print $4}'
 ```
 
 After the containers are up and running, go to the url:
 
-[http://localhost:5000/ping](http://localhost:5000/ping)
+[http://{IP}:5000/ping](http://localhost:5000/ping)
