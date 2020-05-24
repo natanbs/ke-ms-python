@@ -1,15 +1,19 @@
 # App_DevOps_encapsulation
-## Stateful app with redis
+## Docker-compose Flask with Redis 
 
-Query ping outputs pong counts. The data is stored in a redis DB. 
+A containerized Flask app that query ping to a Redis db and returns pong counts.
+
+With docker-compose you can start / stop the whole env at one. 
 
 To run the app run the commands:
 
 ```bash
-        docker network create ping-net                                                       # Create a network env for the containers to communicate
-	docker build -t flask-ping:v1.0.0 .                                                  # Build Flask docker image
-	docker run -d -p 5000:5000 --name ping-flask --network='ping-net' flask-ping:v1.0.0  # Run the Flask container
-	docker run -p 6379:6379 -d --name ping-redis --network='ping-net' redis              # Run a docker Redis image 
+	docker-compose up -d 
+```
+
+To shut down the env:
+```bash
+	docker-compose down
 ```
 
 After the containers are up and running, go to the url:
