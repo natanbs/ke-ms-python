@@ -1,18 +1,17 @@
 # App_DevOps_encapsulation
-## Containerized Flask Application 
+## Stateful app with redis
 
-A containerized Flask app that returns pong to a ping request.
-
-Create a Dockerfile and a requirements.txt accordingly. Then build the image and run the docker from that image.
+Query ping outputs pong counts. The data is stored in a redis DB. 
 
 To run the app run the commands:
 
 ```bash
-	docker build -t flask-ping:latest .                      # Build the docker image
-	docker run -d -p 5000:5000 --name ping-flask flask-ping  # Run the Flask container
+        docker network create ping-net                                                       # Create a network env for the containers to communicate
+	docker build -t flask-ping:v1.0.0 .                                                  # Build Flask docker image
+	docker run -d -p 5000:5000 --name ping-flask --network='ping-net' flask-ping:v1.0.0  # Run the Flask container
+	docker run -p 6379:6379 -d --name ping-redis --network='ping-net' redis              # Run a docker Redis image 
 ```
-Flags: -t: target name. -d: daemon. -p: redirect local port to docker port 
 
-After the application is running go to the url:
+After the containers are up and running, go to the url:
 
 [http://localhost:5000/ping](http://localhost:5000/ping)
